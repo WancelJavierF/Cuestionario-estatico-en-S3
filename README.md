@@ -19,6 +19,8 @@ La validación de respuestas se implementa con la función documentada en `docs/
 
 La ruta `POST /answers` está documentada en `docs/07-api-check-answer.md`.
 
+La conexión del frontend con ambas rutas está documentada en `docs/08-connect-frontend.md`.
+
 ## Ruta de aprendizaje
 
 1. Crear y comprender el frontend local.

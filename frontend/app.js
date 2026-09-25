@@ -1,86 +1,18 @@
-// En esta primera etapa los datos viven en el navegador.
-// Más adelante sustituiremos este arreglo por una llamada a API Gateway.
-const questions = [
-  {
-    id: "s3-001",
-    category: "Amazon S3",
-    text: "¿Qué característica permite conservar varias versiones de un mismo objeto?",
-    options: ["Lifecycle", "Versioning", "Replication", "Transfer Acceleration"],
-    correctIndex: 1,
-    explanation: "S3 Versioning asigna un identificador diferente a cada versión y permite recuperar versiones anteriores."
-  },
-  {
-    id: "ec2-001",
-    category: "Amazon EC2",
-    text: "¿Qué servicio distribuye tráfico entre varias instancias EC2?",
-    options: ["Elastic Load Balancing", "Amazon Route 53", "AWS Auto Scaling", "Amazon CloudWatch"],
-    correctIndex: 0,
-    explanation: "Elastic Load Balancing recibe el tráfico y lo distribuye entre destinos saludables, como instancias EC2."
-  },
-  {
-    id: "iam-001",
-    category: "AWS IAM",
-    text: "¿Qué práctica sigue el principio de mínimo privilegio?",
-    options: ["Asignar AdministratorAccess", "Compartir el usuario raíz", "Conceder solo las acciones necesarias", "Crear claves sin fecha de rotación"],
-    correctIndex: 2,
-    explanation: "El mínimo privilegio concede únicamente las acciones y recursos necesarios para realizar una tarea."
-  },
-  {
-    id: "dynamodb-001",
-    category: "Amazon DynamoDB",
-    text: "¿Qué dato es obligatorio al crear una tabla de DynamoDB?",
-    options: ["Una dirección IP", "Una clave de partición", "Un bucket de S3", "Una instancia EC2"],
-    correctIndex: 1,
-    explanation: "Toda tabla de DynamoDB requiere una clave de partición; opcionalmente puede incluir una clave de ordenación."
-  },
-  {
-    id: "lambda-001",
-    category: "AWS Lambda",
-    text: "¿Cuál es una característica principal de AWS Lambda?",
-    options: ["Requiere administrar el sistema operativo", "Solo funciona dentro de EC2", "Ejecuta código en respuesta a eventos", "Necesita una VPC para funcionar"],
-    correctIndex: 2,
-    explanation: "Lambda ejecuta funciones bajo demanda en respuesta a eventos y AWS administra la infraestructura de ejecución."
-  },
-  {
-    id: "rds-001",
-    category: "Amazon RDS",
-    text: "¿Qué tipo de base de datos NO es compatible con Amazon RDS?",
-    options: ["MySQL", "PostgreSQL", "MongoDB", "Oracle"],
-    correctIndex: 2,
-    explanation: "Amazon RDS admite motores relacionales como MySQL, PostgreSQL, MariaDB, Oracle, SQL Server y Db2, pero no MongoDB."
-  },
-  {
-    id: "cloudfront-001",
-    category: "Amazon CloudFront",
-    text: "¿Cuál es la función principal de Amazon CloudFront?",
-    options: ["Almacenar datos en la nube", "Distribuir contenido a nivel global", "Monitorear instancias EC2", "Gestionar usuarios y permisos"],
-    correctIndex: 1,
-    explanation: "CloudFront es una red de entrega de contenido (CDN) que distribuye contenido a nivel global con baja latencia."
-  },
-  {
-    id: "autoscaling-001",
-    category: "AWS Auto Scaling",
-    text: "¿Qué hace AWS Auto Scaling?",
-    options: ["Crea copias de seguridad de datos", "Ajusta automáticamente la capacidad de recursos", "Monitorea el tráfico web", "Gestiona usuarios y permisos"],
-    correctIndex: 1,
-    explanation: "AWS Auto Scaling ajusta automáticamente la capacidad de recursos para mantener un rendimiento estable y predecible."
-  },
-  {
-    id: "vpc-001",
-    category: "Amazon VPC",
-    text: "¿Qué es una Amazon VPC?",
-    options: ["Un servicio de almacenamiento", "Una red virtual privada en la nube", "Un tipo de base de datos", "Un servicio de monitoreo"],
-    correctIndex: 1,
-    explanation: "Amazon VPC permite crear una red virtual aislada en la nube donde se pueden lanzar recursos de AWS."
-  },
-  {
-    id: "cloudformation-001",
-    category: "AWS CloudFormation",
-    text: "¿Cuál es el propósito principal de AWS CloudFormation?",
-    options: ["Gestionar usuarios y permisos", "Automatizar la creación de recursos en AWS", "Monitorear el tráfico web", "Almacenar datos en la nube"],
-    correctIndex: 1,
-    explanation: "AWS CloudFormation permite definir y provisionar recursos de AWS mediante plantillas, facilitando la automatización."
-  }
+const API_BASE_URL = "https://xi1ygrbqra.execute-api.us-east-1.amazonaws.com";
+
+// El frontend conoce los identificadores, pero las preguntas y respuestas
+// permanecen en DynamoDB y llegan a través de la API.
+const questionIds = [
+  "s3-001",
+  "ec2-001",
+  "iam-001",
+  "dynamodb-001",
+  "lambda-001",
+  "rds-001",
+  "cloudfront-001",
+  "autoscaling-001",
+  "vpc-001",
+  "cloudformation-001"
 ];
 
 const elements = {
@@ -102,15 +34,53 @@ const elements = {
 };
 
 let currentQuestionIndex = 0;
+let currentQuestion = null;
 let correctAnswers = 0;
 let answered = false;
 
-function renderQuestion() {
-  const currentQuestion = questions[currentQuestionIndex];
+function showFeedback(title, message) {
+  elements.feedbackTitle.textContent = title;
+  elements.explanation.textContent = message;
+  elements.feedback.hidden = false;
+}
+
+function setLoadingState() {
+  elements.quizCard.setAttribute("aria-busy", "true");
+  elements.category.textContent = "CARGANDO";
+  elements.question.textContent = "Consultando la siguiente pregunta...";
+  elements.options.replaceChildren();
+  elements.feedback.hidden = true;
+  elements.nextButton.hidden = true;
+}
+
+async function loadQuestion() {
+  setLoadingState();
   answered = false;
 
-  elements.progress.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
-  elements.progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+  const questionId = questionIds[currentQuestionIndex];
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/questions/${questionId}`);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message ?? "No fue posible cargar la pregunta.");
+    }
+
+    currentQuestion = data;
+    renderQuestion();
+  } catch (error) {
+    elements.category.textContent = "ERROR";
+    elements.question.textContent = "No se pudo cargar la pregunta.";
+    showFeedback("Revisa la conexión", error.message);
+  } finally {
+    elements.quizCard.removeAttribute("aria-busy");
+  }
+}
+
+function renderQuestion() {
+  elements.progress.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questionIds.length}`;
+  elements.progressBar.style.width = `${((currentQuestionIndex + 1) / questionIds.length) * 100}%`;
   elements.score.textContent = `Puntuación: ${correctAnswers}`;
   elements.category.textContent = currentQuestion.category;
   elements.question.textContent = currentQuestion.text;
@@ -128,60 +98,82 @@ function renderQuestion() {
   });
 }
 
-function selectAnswer(selectedIndex) {
+async function selectAnswer(selectedIndex) {
   if (answered) return;
-  answered = true;
 
-  const currentQuestion = questions[currentQuestionIndex];
   const optionButtons = [...elements.options.querySelectorAll(".option")];
-  const isCorrect = selectedIndex === currentQuestion.correctIndex;
+  optionButtons.forEach((button) => { button.disabled = true; });
 
-  if (isCorrect) correctAnswers += 1;
+  try {
+    const response = await fetch(`${API_BASE_URL}/answers`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: currentQuestion.id,
+        selectedIndex
+      })
+    });
 
-  optionButtons.forEach((button, optionIndex) => {
-    button.disabled = true;
-    if (optionIndex === currentQuestion.correctIndex) button.classList.add("correct");
-    if (optionIndex === selectedIndex && !isCorrect) button.classList.add("incorrect");
-  });
+    const result = await response.json();
 
-  elements.score.textContent = `Puntuación: ${correctAnswers}`;
-  elements.feedbackTitle.textContent = isCorrect ? "¡Respuesta correcta!" : "Respuesta incorrecta";
-  elements.explanation.textContent = currentQuestion.explanation;
-  elements.feedback.hidden = false;
-  elements.nextButton.textContent = currentQuestionIndex === questions.length - 1
-    ? "Ver resultado"
-    : "Siguiente pregunta";
-  elements.nextButton.hidden = false;
+    if (!response.ok) {
+      throw new Error(result.message ?? "No fue posible comprobar la respuesta.");
+    }
+
+    answered = true;
+    if (result.isCorrect) correctAnswers += 1;
+
+    optionButtons.forEach((button, optionIndex) => {
+      if (optionIndex === result.correctIndex) button.classList.add("correct");
+      if (optionIndex === selectedIndex && !result.isCorrect) button.classList.add("incorrect");
+    });
+
+    elements.score.textContent = `Puntuación: ${correctAnswers}`;
+    showFeedback(
+      result.isCorrect ? "¡Respuesta correcta!" : "Respuesta incorrecta",
+      result.explanation
+    );
+    elements.nextButton.textContent = currentQuestionIndex === questionIds.length - 1
+      ? "Ver resultado"
+      : "Siguiente pregunta";
+    elements.nextButton.hidden = false;
+  } catch (error) {
+    optionButtons.forEach((button) => { button.disabled = false; });
+    showFeedback("No se pudo comprobar la respuesta", error.message);
+  }
 }
 
 function showResult() {
-  const percentage = Math.round((correctAnswers / questions.length) * 100);
+  const percentage = Math.round((correctAnswers / questionIds.length) * 100);
   elements.quizCard.hidden = true;
   elements.result.hidden = false;
-  elements.resultTitle.textContent = `${correctAnswers} de ${questions.length} respuestas correctas`;
+  elements.resultTitle.textContent = `${correctAnswers} de ${questionIds.length} respuestas correctas`;
   elements.resultMessage.textContent = `Obtuviste ${percentage}%. Puedes repetir el cuestionario para reforzar los conceptos.`;
   elements.restartButton.focus();
 }
 
 function nextQuestion() {
   if (!answered) return;
-  if (currentQuestionIndex === questions.length - 1) {
+  if (currentQuestionIndex === questionIds.length - 1) {
     showResult();
     return;
   }
 
   currentQuestionIndex += 1;
-  renderQuestion();
+  loadQuestion();
 }
 
 function restartQuiz() {
   currentQuestionIndex = 0;
   correctAnswers = 0;
+  currentQuestion = null;
   elements.result.hidden = true;
   elements.quizCard.hidden = false;
-  renderQuestion();
+  loadQuestion();
 }
 
 elements.nextButton.addEventListener("click", nextQuestion);
 elements.restartButton.addEventListener("click", restartQuiz);
-renderQuestion();
+loadQuestion();
