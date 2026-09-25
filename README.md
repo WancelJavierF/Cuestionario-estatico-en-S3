@@ -37,5 +37,5 @@ La publicación del frontend en un bucket S3 dedicado está documentada en `docs
 
 Abre `frontend/index.html` en un navegador. No requiere dependencias ni compilación.
 =======
-# Cuestionario-est-tico-en-S3
+# Cuestionario-estatico-en-S3
 >>>>>>> bdc72d305ab4398429a76582e9ba9a60c305cf17
