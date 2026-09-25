@@ -1,0 +1,16 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadQuizFrontend",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": [
+        "arn:aws:s3:::BUCKET_NAME/index.html",
+        "arn:aws:s3:::BUCKET_NAME/styles.css",
+        "arn:aws:s3:::BUCKET_NAME/app.js"
+      ]
+    }
+  ]
+}

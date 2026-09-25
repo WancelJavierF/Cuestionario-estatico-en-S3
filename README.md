@@ -21,6 +21,8 @@ La ruta `POST /answers` está documentada en `docs/07-api-check-answer.md`.
 
 La conexión del frontend con ambas rutas está documentada en `docs/08-connect-frontend.md`.
 
+La publicación del frontend en un bucket S3 dedicado está documentada en `docs/09-deploy-frontend-s3.md`.
+
 ## Ruta de aprendizaje
 
 1. Crear y comprender el frontend local.
