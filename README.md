@@ -13,6 +13,8 @@ El código de la primera función está en `lambda/get-question/index.mjs`. Su g
 
 La guía para publicar la función con la ruta `GET /questions/{id}` está en `docs/04-api-gateway.md`.
 
+La carga inicial de preguntas se realiza con la función temporal documentada en `docs/05-seed-questions.md`.
+
 ## Ruta de aprendizaje
 
 1. Crear y comprender el frontend local.
