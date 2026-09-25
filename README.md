@@ -17,6 +17,8 @@ La carga inicial de preguntas se realiza con la función temporal documentada en
 
 La validación de respuestas se implementa con la función documentada en `docs/06-check-answer-lambda.md`.
 
+La ruta `POST /answers` está documentada en `docs/07-api-check-answer.md`.
+
 ## Ruta de aprendizaje
 
 1. Crear y comprender el frontend local.
