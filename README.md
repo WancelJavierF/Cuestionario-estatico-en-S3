@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Proyecto 02: Quiz interactivo para AWS SAA
 
 Aplicación educativa para practicar conceptos de AWS Solutions Architect Associate.
@@ -19,3 +20,6 @@ La primera versión funciona completamente en el navegador. Las preguntas están
 ## Ejecutar localmente
 
 Abre `frontend/index.html` en un navegador. No requiere dependencias ni compilación.
+=======
+# Cuestionario-est-tico-en-S3
+>>>>>>> bdc72d305ab4398429a76582e9ba9a60c305cf17
