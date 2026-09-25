@@ -1,0 +1,21 @@
+# Proyecto 02: Quiz interactivo para AWS SAA
+
+Aplicación educativa para practicar conceptos de AWS Solutions Architect Associate.
+
+## Etapa actual
+
+La primera versión funciona completamente en el navegador. Las preguntas están en `frontend/app.js`; todavía no utiliza recursos de AWS.
+
+## Ruta de aprendizaje
+
+1. Crear y comprender el frontend local.
+2. Publicar el frontend en Amazon S3.
+3. Crear una tabla en DynamoDB.
+4. Crear una función Lambda con permisos mínimos.
+5. Publicar la función mediante una HTTP API de API Gateway.
+6. Conectar el frontend con la API y configurar CORS.
+7. Revisar registros y errores en CloudWatch.
+
+## Ejecutar localmente
+
+Abre `frontend/index.html` en un navegador. No requiere dependencias ni compilación.

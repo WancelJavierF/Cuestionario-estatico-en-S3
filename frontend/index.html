@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Quiz interactivo para practicar conceptos de AWS Solutions Architect Associate.">
+  <title>Quiz AWS SAA</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <p class="eyebrow">PROYECTO 02 · AWS SAA</p>
+      <h1>Quiz de arquitectura AWS</h1>
+      <p>Practica decisiones de arquitectura y revisa la explicación de cada respuesta.</p>
+    </header>
+
+    <section class="quiz-card" aria-live="polite">
+      <div class="quiz-meta">
+        <span id="progress">Pregunta 1 de 5</span>
+        <span id="score">Puntuación: 0</span>
+      </div>
+
+      <div class="progress-track" aria-hidden="true">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+
+      <p id="category" class="category"></p>
+      <h2 id="question"></h2>
+      <div id="options" class="options"></div>
+
+      <div id="feedback" class="feedback" hidden>
+        <strong id="feedback-title"></strong>
+        <p id="explanation"></p>
+      </div>
+
+      <button id="next-button" class="primary-button" type="button" hidden>
+        Siguiente pregunta
+      </button>
+    </section>
+
+    <section id="result" class="result-card" hidden aria-live="polite">
+      <p class="eyebrow">RESULTADO</p>
+      <h2 id="result-title"></h2>
+      <p id="result-message"></p>
+      <button id="restart-button" class="primary-button" type="button">
+        Intentar nuevamente
+      </button>
+    </section>
+  </main>
+</body>
+</html>
