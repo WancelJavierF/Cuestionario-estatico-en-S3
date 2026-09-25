@@ -15,6 +15,8 @@ La guía para publicar la función con la ruta `GET /questions/{id}` está en `d
 
 La carga inicial de preguntas se realiza con la función temporal documentada en `docs/05-seed-questions.md`.
 
+La validación de respuestas se implementa con la función documentada en `docs/06-check-answer-lambda.md`.
+
 ## Ruta de aprendizaje
 
 1. Crear y comprender el frontend local.
