@@ -1,20 +1,5 @@
 const API_BASE_URL = "https://xi1ygrbqra.execute-api.us-east-1.amazonaws.com";
 
-// El frontend conoce los identificadores, pero las preguntas y respuestas
-// permanecen en DynamoDB y llegan a través de la API.
-const questionIds = [
-  "s3-001",
-  "ec2-001",
-  "iam-001",
-  "dynamodb-001",
-  "lambda-001",
-  "rds-001",
-  "cloudfront-001",
-  "autoscaling-001",
-  "vpc-001",
-  "cloudformation-001"
-];
-
 const elements = {
   quizCard: document.querySelector(".quiz-card"),
   progress: document.querySelector("#progress"),
@@ -34,6 +19,7 @@ const elements = {
 };
 
 let currentQuestionIndex = 0;
+let questions = [];
 let currentQuestion = null;
 let correctAnswers = 0;
 let answered = false;
@@ -56,31 +42,14 @@ function setLoadingState() {
 async function loadQuestion() {
   setLoadingState();
   answered = false;
-
-  const questionId = questionIds[currentQuestionIndex];
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/questions/${questionId}`);
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message ?? "No fue posible cargar la pregunta.");
-    }
-
-    currentQuestion = data;
-    renderQuestion();
-  } catch (error) {
-    elements.category.textContent = "ERROR";
-    elements.question.textContent = "No se pudo cargar la pregunta.";
-    showFeedback("Revisa la conexión", error.message);
-  } finally {
-    elements.quizCard.removeAttribute("aria-busy");
-  }
+  currentQuestion = questions[currentQuestionIndex];
+  renderQuestion();
+  elements.quizCard.removeAttribute("aria-busy");
 }
 
 function renderQuestion() {
-  elements.progress.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questionIds.length}`;
-  elements.progressBar.style.width = `${((currentQuestionIndex + 1) / questionIds.length) * 100}%`;
+  elements.progress.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
+  elements.progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
   elements.score.textContent = `Puntuación: ${correctAnswers}`;
   elements.category.textContent = currentQuestion.category;
   elements.question.textContent = currentQuestion.text;
@@ -135,7 +104,7 @@ async function selectAnswer(selectedIndex) {
       result.isCorrect ? "¡Respuesta correcta!" : "Respuesta incorrecta",
       result.explanation
     );
-    elements.nextButton.textContent = currentQuestionIndex === questionIds.length - 1
+    elements.nextButton.textContent = currentQuestionIndex === questions.length - 1
       ? "Ver resultado"
       : "Siguiente pregunta";
     elements.nextButton.hidden = false;
@@ -146,17 +115,17 @@ async function selectAnswer(selectedIndex) {
 }
 
 function showResult() {
-  const percentage = Math.round((correctAnswers / questionIds.length) * 100);
+  const percentage = Math.round((correctAnswers / questions.length) * 100);
   elements.quizCard.hidden = true;
   elements.result.hidden = false;
-  elements.resultTitle.textContent = `${correctAnswers} de ${questionIds.length} respuestas correctas`;
+  elements.resultTitle.textContent = `${correctAnswers} de ${questions.length} respuestas correctas`;
   elements.resultMessage.textContent = `Obtuviste ${percentage}%. Puedes repetir el cuestionario para reforzar los conceptos.`;
   elements.restartButton.focus();
 }
 
 function nextQuestion() {
   if (!answered) return;
-  if (currentQuestionIndex === questionIds.length - 1) {
+  if (currentQuestionIndex === questions.length - 1) {
     showResult();
     return;
   }
@@ -174,6 +143,33 @@ function restartQuiz() {
   loadQuestion();
 }
 
+async function startQuiz() {
+  setLoadingState();
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/questions`, {
+      cache: "no-store"
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message ?? "No fue posible obtener las preguntas.");
+    }
+
+    if (!Array.isArray(data.questions) || data.questions.length === 0) {
+      throw new Error("Todavía no hay preguntas disponibles.");
+    }
+
+    questions = data.questions;
+    loadQuestion();
+  } catch (error) {
+    elements.category.textContent = "ERROR";
+    elements.question.textContent = "No se pudo iniciar el cuestionario.";
+    showFeedback("Revisa la conexión", error.message);
+    elements.quizCard.removeAttribute("aria-busy");
+  }
+}
+
 elements.nextButton.addEventListener("click", nextQuestion);
 elements.restartButton.addEventListener("click", restartQuiz);
-loadQuestion();
+startQuiz();

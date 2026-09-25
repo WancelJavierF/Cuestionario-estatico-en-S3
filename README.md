@@ -1,41 +1,37 @@
-<<<<<<< HEAD
 # Proyecto 02: Quiz interactivo para AWS SAA
 
-Aplicación educativa para practicar conceptos de AWS Solutions Architect Associate.
+Aplicación serverless para practicar conceptos de AWS Solutions Architect Associate mediante preguntas almacenadas en DynamoDB.
 
-## Etapa actual
+## Arquitectura
 
-La primera versión funciona completamente en el navegador. Las preguntas están en `frontend/app.js`; todavía no utiliza recursos de AWS.
+- Amazon S3 publica el frontend estático.
+- Amazon API Gateway expone la API HTTP.
+- AWS Lambda obtiene preguntas y comprueba respuestas.
+- Amazon DynamoDB almacena las preguntas, opciones, respuestas y explicaciones.
+- Amazon CloudWatch conserva los registros de ejecución de Lambda.
 
-El modelo de datos para la siguiente etapa está en `data/questions.json`. La guía para crear la primera tabla se encuentra en `docs/02-dynamodb.md`.
+## Rutas de la API
 
-El código de la primera función está en `lambda/get-question/index.mjs`. Su guía se encuentra en `docs/03-lambda-get-question.md`.
+| Método | Ruta | Función |
+| --- | --- | --- |
+| `GET` | `/questions` | Devuelve todas las preguntas sin revelar las respuestas. |
+| `GET` | `/questions/{id}` | Devuelve una pregunta específica. |
+| `POST` | `/answers` | Comprueba la respuesta seleccionada y devuelve la explicación. |
 
-La guía para publicar la función con la ruta `GET /questions/{id}` está en `docs/04-api-gateway.md`.
+El frontend obtiene dinámicamente las preguntas mediante `GET /questions`. Agregar un elemento a DynamoDB no requiere modificar `app.js`.
 
-La carga inicial de preguntas se realiza con la función temporal documentada en `docs/05-seed-questions.md`.
+## Documentación
 
-La validación de respuestas se implementa con la función documentada en `docs/06-check-answer-lambda.md`.
-
-La ruta `POST /answers` está documentada en `docs/07-api-check-answer.md`.
-
-La conexión del frontend con ambas rutas está documentada en `docs/08-connect-frontend.md`.
-
-La publicación del frontend en un bucket S3 dedicado está documentada en `docs/09-deploy-frontend-s3.md`.
-
-## Ruta de aprendizaje
-
-1. Crear y comprender el frontend local.
-2. Publicar el frontend en Amazon S3.
-3. Crear una tabla en DynamoDB.
-4. Crear una función Lambda con permisos mínimos.
-5. Publicar la función mediante una HTTP API de API Gateway.
-6. Conectar el frontend con la API y configurar CORS.
-7. Revisar registros y errores en CloudWatch.
+1. [Crear la tabla en DynamoDB](docs/02-dynamodb.md)
+2. [Crear la Lambda para obtener una pregunta](docs/03-lambda-get-question.md)
+3. [Publicar la primera ruta en API Gateway](docs/04-api-gateway.md)
+4. [Cargar las preguntas iniciales](docs/05-seed-questions.md)
+5. [Crear la Lambda que comprueba respuestas](docs/06-check-answer-lambda.md)
+6. [Publicar la ruta de respuestas](docs/07-api-check-answer.md)
+7. [Conectar el frontend con la API](docs/08-connect-frontend.md)
+8. [Publicar el frontend en S3](docs/09-deploy-frontend-s3.md)
+9. [Administrar preguntas dinámicamente](docs/10-dynamic-questions.md)
 
 ## Ejecutar localmente
 
-Abre `frontend/index.html` en un navegador. No requiere dependencias ni compilación.
-=======
-# Cuestionario-estatico-en-S3
->>>>>>> bdc72d305ab4398429a76582e9ba9a60c305cf17
+Sirve la carpeta `frontend` con un servidor HTTP local y abre la dirección que este indique. La aplicación necesita conexión con la API desplegada en AWS.

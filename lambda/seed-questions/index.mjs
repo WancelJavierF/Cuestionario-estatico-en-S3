@@ -84,6 +84,22 @@ const questions = [
     options: ["Gestionar usuarios y permisos", "Automatizar la creación de recursos en AWS", "Monitorear el tráfico web", "Almacenar datos en la nube"],
     correctIndex: 1,
     explanation: "AWS CloudFormation permite definir y provisionar recursos de AWS mediante plantillas, facilitando la automatización."
+  },
+  {
+    id: "route53-001",
+    category: "Amazon Route 53",
+    text: "¿Cuál es la función principal de Amazon Route 53?",
+    options: ["Ejecutar funciones sin servidor", "Proporcionar resolución DNS y enrutamiento de tráfico", "Almacenar objetos", "Crear imágenes de máquinas virtuales"],
+    correctIndex: 1,
+    explanation: "Amazon Route 53 es un servicio DNS escalable que traduce nombres de dominio y permite dirigir el tráfico mediante diferentes políticas de enrutamiento."
+  },
+  {
+    id: "sqs-001",
+    category: "Amazon SQS",
+    text: "¿Qué beneficio principal aporta Amazon SQS a una arquitectura distribuida?",
+    options: ["Ejecutar consultas SQL", "Desacoplar componentes mediante colas de mensajes", "Distribuir contenido desde ubicaciones de borde", "Administrar registros DNS"],
+    correctIndex: 1,
+    explanation: "Amazon SQS permite desacoplar componentes porque los productores colocan mensajes en una cola y los consumidores los procesan de manera independiente."
   }
 ];
 
