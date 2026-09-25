@@ -7,6 +7,8 @@ Aplicación educativa para practicar conceptos de AWS Solutions Architect Associ
 
 La primera versión funciona completamente en el navegador. Las preguntas están en `frontend/app.js`; todavía no utiliza recursos de AWS.
 
+El modelo de datos para la siguiente etapa está en `data/questions.json`. La guía para crear la primera tabla se encuentra en `docs/02-dynamodb.md`.
+
 ## Ruta de aprendizaje
 
 1. Crear y comprender el frontend local.
