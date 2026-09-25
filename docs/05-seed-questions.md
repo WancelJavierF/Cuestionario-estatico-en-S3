@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Crear una función Lambda temporal que inserte las cinco preguntas mediante una operación `BatchWriteItem`.
+Crear una función Lambda temporal que inserte las diez preguntas mediante una operación `BatchWriteItem`.
 
 Esta función no tendrá un trigger ni una ruta pública. La invocaremos una vez desde la consola y la eliminaremos después de comprobar los datos.
 
@@ -49,7 +49,7 @@ El resultado esperado es:
 ```json
 {
   "statusCode": 200,
-  "body": "{\"message\":\"Preguntas guardadas correctamente.\",\"insertedCount\":5}"
+      "body": "{\"message\":\"Preguntas guardadas correctamente.\",\"insertedCount\":10}"
 }
 ```
 
@@ -63,10 +63,15 @@ ec2-001
 iam-001
 dynamodb-001
 lambda-001
+rds-001
+cloudfront-001
+autoscaling-001
+vpc-001
+cloudformation-001
 ```
 
 `BatchWriteItem` vuelve a escribir un elemento si ya existe la misma clave. Por eso `s3-001` no se duplica.
 
 ## Limpieza posterior
 
-Después de comprobar los cinco elementos, elimina `quiz-seed-questions` y su rol de ejecución. El código permanecerá en GitHub como evidencia reproducible del proceso.
+Después de comprobar los diez elementos, elimina `quiz-seed-questions` y su rol de ejecución. El código permanecerá en GitHub como evidencia reproducible del proceso.

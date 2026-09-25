@@ -44,6 +44,46 @@ const questions = [
     options: ["Requiere administrar el sistema operativo", "Solo funciona dentro de EC2", "Ejecuta código en respuesta a eventos", "Necesita una VPC para funcionar"],
     correctIndex: 2,
     explanation: "Lambda ejecuta funciones bajo demanda en respuesta a eventos y AWS administra la infraestructura de ejecución."
+  },
+  {
+    id: "rds-001",
+    category: "Amazon RDS",
+    text: "¿Qué tipo de base de datos NO es compatible con Amazon RDS?",
+    options: ["MySQL", "PostgreSQL", "MongoDB", "Oracle"],
+    correctIndex: 2,
+    explanation: "Amazon RDS admite motores relacionales como MySQL, PostgreSQL, MariaDB, Oracle, SQL Server y Db2, pero no MongoDB."
+  },
+  {
+    id: "cloudfront-001",
+    category: "Amazon CloudFront",
+    text: "¿Cuál es la función principal de Amazon CloudFront?",
+    options: ["Almacenar datos en la nube", "Distribuir contenido a nivel global", "Monitorear instancias EC2", "Gestionar usuarios y permisos"],
+    correctIndex: 1,
+    explanation: "CloudFront es una red de entrega de contenido (CDN) que distribuye contenido a nivel global con baja latencia."
+  },
+  {
+    id: "autoscaling-001",
+    category: "AWS Auto Scaling",
+    text: "¿Qué hace AWS Auto Scaling?",
+    options: ["Crea copias de seguridad de datos", "Ajusta automáticamente la capacidad de recursos", "Monitorea el tráfico web", "Gestiona usuarios y permisos"],
+    correctIndex: 1,
+    explanation: "AWS Auto Scaling ajusta automáticamente la capacidad de recursos para mantener un rendimiento estable y predecible."
+  },
+  {
+    id: "vpc-001",
+    category: "Amazon VPC",
+    text: "¿Qué es una Amazon VPC?",
+    options: ["Un servicio de almacenamiento", "Una red virtual privada en la nube", "Un tipo de base de datos", "Un servicio de monitoreo"],
+    correctIndex: 1,
+    explanation: "Amazon VPC permite crear una red virtual aislada en la nube donde se pueden lanzar recursos de AWS."
+  },
+  {
+    id: "cloudformation-001",
+    category: "AWS CloudFormation",
+    text: "¿Cuál es el propósito principal de AWS CloudFormation?",
+    options: ["Gestionar usuarios y permisos", "Automatizar la creación de recursos en AWS", "Monitorear el tráfico web", "Almacenar datos en la nube"],
+    correctIndex: 1,
+    explanation: "AWS CloudFormation permite definir y provisionar recursos de AWS mediante plantillas, facilitando la automatización."
   }
 ];
 

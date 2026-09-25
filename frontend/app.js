@@ -2,6 +2,7 @@
 // Más adelante sustituiremos este arreglo por una llamada a API Gateway.
 const questions = [
   {
+    id: "s3-001",
     category: "Amazon S3",
     text: "¿Qué característica permite conservar varias versiones de un mismo objeto?",
     options: ["Lifecycle", "Versioning", "Replication", "Transfer Acceleration"],
@@ -9,6 +10,7 @@ const questions = [
     explanation: "S3 Versioning asigna un identificador diferente a cada versión y permite recuperar versiones anteriores."
   },
   {
+    id: "ec2-001",
     category: "Amazon EC2",
     text: "¿Qué servicio distribuye tráfico entre varias instancias EC2?",
     options: ["Elastic Load Balancing", "Amazon Route 53", "AWS Auto Scaling", "Amazon CloudWatch"],
@@ -16,6 +18,7 @@ const questions = [
     explanation: "Elastic Load Balancing recibe el tráfico y lo distribuye entre destinos saludables, como instancias EC2."
   },
   {
+    id: "iam-001",
     category: "AWS IAM",
     text: "¿Qué práctica sigue el principio de mínimo privilegio?",
     options: ["Asignar AdministratorAccess", "Compartir el usuario raíz", "Conceder solo las acciones necesarias", "Crear claves sin fecha de rotación"],
@@ -23,6 +26,7 @@ const questions = [
     explanation: "El mínimo privilegio concede únicamente las acciones y recursos necesarios para realizar una tarea."
   },
   {
+    id: "dynamodb-001",
     category: "Amazon DynamoDB",
     text: "¿Qué dato es obligatorio al crear una tabla de DynamoDB?",
     options: ["Una dirección IP", "Una clave de partición", "Un bucket de S3", "Una instancia EC2"],
@@ -30,6 +34,7 @@ const questions = [
     explanation: "Toda tabla de DynamoDB requiere una clave de partición; opcionalmente puede incluir una clave de ordenación."
   },
   {
+    id: "lambda-001",
     category: "AWS Lambda",
     text: "¿Cuál es una característica principal de AWS Lambda?",
     options: ["Requiere administrar el sistema operativo", "Solo funciona dentro de EC2", "Ejecuta código en respuesta a eventos", "Necesita una VPC para funcionar"],
@@ -37,13 +42,15 @@ const questions = [
     explanation: "Lambda ejecuta funciones bajo demanda en respuesta a eventos y AWS administra la infraestructura de ejecución."
   },
   {
+    id: "rds-001",
     category: "Amazon RDS",
     text: "¿Qué tipo de base de datos NO es compatible con Amazon RDS?",
     options: ["MySQL", "PostgreSQL", "MongoDB", "Oracle"],
     correctIndex: 2,
-    explanation: "Amazon RDS soporta MySQL, PostgreSQL, Oracle, SQL Server y MariaDB, pero no MongoDB."
+    explanation: "Amazon RDS admite motores relacionales como MySQL, PostgreSQL, MariaDB, Oracle, SQL Server y Db2, pero no MongoDB."
   },
   {
+    id: "cloudfront-001",
     category: "Amazon CloudFront",
     text: "¿Cuál es la función principal de Amazon CloudFront?",
     options: ["Almacenar datos en la nube", "Distribuir contenido a nivel global", "Monitorear instancias EC2", "Gestionar usuarios y permisos"],
@@ -51,6 +58,7 @@ const questions = [
     explanation: "CloudFront es una red de entrega de contenido (CDN) que distribuye contenido a nivel global con baja latencia."
   },
   {
+    id: "autoscaling-001",
     category: "AWS Auto Scaling",
     text: "¿Qué hace AWS Auto Scaling?",
     options: ["Crea copias de seguridad de datos", "Ajusta automáticamente la capacidad de recursos", "Monitorea el tráfico web", "Gestiona usuarios y permisos"],
@@ -58,6 +66,7 @@ const questions = [
     explanation: "AWS Auto Scaling ajusta automáticamente la capacidad de recursos para mantener un rendimiento estable y predecible."
   },
   {
+    id: "vpc-001",
     category: "Amazon VPC",
     text: "¿Qué es una Amazon VPC?",
     options: ["Un servicio de almacenamiento", "Una red virtual privada en la nube", "Un tipo de base de datos", "Un servicio de monitoreo"],
@@ -65,6 +74,7 @@ const questions = [
     explanation: "Amazon VPC permite crear una red virtual aislada en la nube donde se pueden lanzar recursos de AWS."
   },
   {
+    id: "cloudformation-001",
     category: "AWS CloudFormation",
     text: "¿Cuál es el propósito principal de AWS CloudFormation?",
     options: ["Gestionar usuarios y permisos", "Automatizar la creación de recursos en AWS", "Monitorear el tráfico web", "Almacenar datos en la nube"],
